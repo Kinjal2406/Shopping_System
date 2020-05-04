@@ -1,0 +1,552 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="a_id" />
+          </Key>
+          <Property Name="a_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="a_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="a_mail" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="cc_id" />
+          </Key>
+          <Property Name="cc_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="cc_name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="cc_description" Type="nvarchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="c_id" />
+          </Key>
+          <Property Name="c_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="c_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_dob" Type="date" Nullable="false" />
+          <Property Name="c_age" Type="int" Nullable="false" />
+          <Property Name="c_mail" Type="nvarchar" MaxLength="30" />
+          <Property Name="c_address" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="c_contact" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Feedback_DB">
+          <Key>
+            <PropertyRef Name="f_id" />
+          </Key>
+          <Property Name="f_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="feedback" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="c_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="i_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item_DB">
+          <Key>
+            <PropertyRef Name="I_id" />
+          </Key>
+          <Property Name="I_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="I_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="I_description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="cc_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="i_cost" Type="int" Nullable="false" />
+          <Property Name="i_discount" Type="int" Nullable="false" />
+          <Property Name="i_status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="i_quantity" Type="int" Nullable="false" />
+          <Property Name="i_company" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="i_imagepath" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="order_details">
+          <Key>
+            <PropertyRef Name="o_id" />
+          </Key>
+          <Property Name="o_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="i_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="cc_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="c_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="o_status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="o_date" Type="varchar" MaxLength="50" />
+          <Property Name="o_cost" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="User_DB">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="u_password" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Customer_ToTable">
+          <End Role="User_DB" Type="Self.User_DB" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User_DB">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_DB_ToTable">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Feedback_DB" Type="Self.Feedback_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Feedback_DB">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_DB_ToTable_1">
+          <End Role="Item_DB" Type="Self.Item_DB" Multiplicity="1" />
+          <End Role="Feedback_DB" Type="Self.Feedback_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_DB">
+              <PropertyRef Name="I_id" />
+            </Principal>
+            <Dependent Role="Feedback_DB">
+              <PropertyRef Name="i_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_DB_ToTable">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Item_DB" Type="Self.Item_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cc_id" />
+            </Principal>
+            <Dependent Role="Item_DB">
+              <PropertyRef Name="cc_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_details_ToTable">
+          <End Role="Item_DB" Type="Self.Item_DB" Multiplicity="1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_DB">
+              <PropertyRef Name="I_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="i_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_details_ToTable_1">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cc_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="cc_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_details_ToTable_2">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable">
+          <End Role="User_DB" Type="Self.User_DB" Multiplicity="1" />
+          <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User_DB">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="a_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1ModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Feedback_DB" EntityType="Self.Feedback_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item_DB" EntityType="Self.Item_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order_details" EntityType="Self.order_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_DB" EntityType="Self.User_DB" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customer_ToTable" Association="Self.FK_Customer_ToTable">
+            <End Role="User_DB" EntitySet="User_DB" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_DB_ToTable" Association="Self.FK_Feedback_DB_ToTable">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Feedback_DB" EntitySet="Feedback_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_DB_ToTable_1" Association="Self.FK_Feedback_DB_ToTable_1">
+            <End Role="Item_DB" EntitySet="Item_DB" />
+            <End Role="Feedback_DB" EntitySet="Feedback_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_DB_ToTable" Association="Self.FK_Item_DB_ToTable">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Item_DB" EntitySet="Item_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_details_ToTable" Association="Self.FK_order_details_ToTable">
+            <End Role="Item_DB" EntitySet="Item_DB" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_details_ToTable_1" Association="Self.FK_order_details_ToTable_1">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_details_ToTable_2" Association="Self.FK_order_details_ToTable_2">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
+            <End Role="User_DB" EntitySet="User_DB" />
+            <End Role="Admin" EntitySet="Admin" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="a_id" />
+          </Key>
+          <Property Name="a_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="a_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="a_mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User_DB" Relationship="Self.FK_Table_ToTable" FromRole="Admin" ToRole="User_DB" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="cc_id" />
+          </Key>
+          <Property Name="cc_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cc_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cc_description" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Item_DB" Relationship="Self.FK_Item_DB_ToTable" FromRole="Category" ToRole="Item_DB" />
+          <NavigationProperty Name="order_details" Relationship="Self.FK_order_details_ToTable_1" FromRole="Category" ToRole="order_details" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="c_id" />
+          </Key>
+          <Property Name="c_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_dob" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="c_age" Type="Int32" Nullable="false" />
+          <Property Name="c_mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="c_address" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_contact" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User_DB" Relationship="Self.FK_Customer_ToTable" FromRole="Customer" ToRole="User_DB" />
+          <NavigationProperty Name="Feedback_DB" Relationship="Self.FK_Feedback_DB_ToTable" FromRole="Customer" ToRole="Feedback_DB" />
+          <NavigationProperty Name="order_details" Relationship="Self.FK_order_details_ToTable_2" FromRole="Customer" ToRole="order_details" />
+        </EntityType>
+        <EntityType Name="Feedback_DB">
+          <Key>
+            <PropertyRef Name="f_id" />
+          </Key>
+          <Property Name="f_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="feedback" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="i_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Feedback_DB_ToTable" FromRole="Feedback_DB" ToRole="Customer" />
+          <NavigationProperty Name="Item_DB" Relationship="Self.FK_Feedback_DB_ToTable_1" FromRole="Feedback_DB" ToRole="Item_DB" />
+        </EntityType>
+        <EntityType Name="Item_DB">
+          <Key>
+            <PropertyRef Name="I_id" />
+          </Key>
+          <Property Name="I_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="I_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="I_description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cc_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="i_cost" Type="Int32" Nullable="false" />
+          <Property Name="i_discount" Type="Int32" Nullable="false" />
+          <Property Name="i_status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="i_quantity" Type="Int32" Nullable="false" />
+          <Property Name="i_company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="i_imagepath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Item_DB_ToTable" FromRole="Item_DB" ToRole="Category" />
+          <NavigationProperty Name="Feedback_DB" Relationship="Self.FK_Feedback_DB_ToTable_1" FromRole="Item_DB" ToRole="Feedback_DB" />
+          <NavigationProperty Name="order_details" Relationship="Self.FK_order_details_ToTable" FromRole="Item_DB" ToRole="order_details" />
+        </EntityType>
+        <EntityType Name="order_details">
+          <Key>
+            <PropertyRef Name="o_id" />
+          </Key>
+          <Property Name="o_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="i_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cc_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="o_status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="o_date" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_cost" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_order_details_ToTable_1" FromRole="order_details" ToRole="Category" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_order_details_ToTable_2" FromRole="order_details" ToRole="Customer" />
+          <NavigationProperty Name="Item_DB" Relationship="Self.FK_order_details_ToTable" FromRole="order_details" ToRole="Item_DB" />
+        </EntityType>
+        <EntityType Name="User_DB">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="u_password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK_Table_ToTable" FromRole="User_DB" ToRole="Admin" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Customer_ToTable" FromRole="User_DB" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK_Table_ToTable">
+          <End Role="User_DB" Type="Self.User_DB" Multiplicity="1" />
+          <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User_DB">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="a_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_DB_ToTable">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Item_DB" Type="Self.Item_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cc_id" />
+            </Principal>
+            <Dependent Role="Item_DB">
+              <PropertyRef Name="cc_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_details_ToTable_1">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cc_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="cc_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_ToTable">
+          <End Role="User_DB" Type="Self.User_DB" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User_DB">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_DB_ToTable">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Feedback_DB" Type="Self.Feedback_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Feedback_DB">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_details_ToTable_2">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_DB_ToTable_1">
+          <End Role="Item_DB" Type="Self.Item_DB" Multiplicity="1" />
+          <End Role="Feedback_DB" Type="Self.Feedback_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_DB">
+              <PropertyRef Name="I_id" />
+            </Principal>
+            <Dependent Role="Feedback_DB">
+              <PropertyRef Name="i_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_details_ToTable">
+          <End Role="Item_DB" Type="Self.Item_DB" Multiplicity="1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_DB">
+              <PropertyRef Name="I_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="i_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1Entities4" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Feedback_DB" EntityType="Self.Feedback_DB" />
+          <EntitySet Name="Item_DB" EntityType="Self.Item_DB" />
+          <EntitySet Name="order_details" EntityType="Self.order_details" />
+          <EntitySet Name="User_DB" EntityType="Self.User_DB" />
+          <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
+            <End Role="User_DB" EntitySet="User_DB" />
+            <End Role="Admin" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_DB_ToTable" Association="Self.FK_Item_DB_ToTable">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Item_DB" EntitySet="Item_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_details_ToTable_1" Association="Self.FK_order_details_ToTable_1">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_ToTable" Association="Self.FK_Customer_ToTable">
+            <End Role="User_DB" EntitySet="User_DB" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_DB_ToTable" Association="Self.FK_Feedback_DB_ToTable">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Feedback_DB" EntitySet="Feedback_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_details_ToTable_2" Association="Self.FK_order_details_ToTable_2">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_DB_ToTable_1" Association="Self.FK_Feedback_DB_ToTable_1">
+            <End Role="Item_DB" EntitySet="Item_DB" />
+            <End Role="Feedback_DB" EntitySet="Feedback_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_details_ToTable" Association="Self.FK_order_details_ToTable">
+            <End Role="Item_DB" EntitySet="Item_DB" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities4">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="Database1Model.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="a_id" ColumnName="a_id" />
+                <ScalarProperty Name="a_name" ColumnName="a_name" />
+                <ScalarProperty Name="a_mail" ColumnName="a_mail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="Database1Model.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="cc_id" ColumnName="cc_id" />
+                <ScalarProperty Name="cc_name" ColumnName="cc_name" />
+                <ScalarProperty Name="cc_description" ColumnName="cc_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="Database1Model.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="c_name" ColumnName="c_name" />
+                <ScalarProperty Name="c_dob" ColumnName="c_dob" />
+                <ScalarProperty Name="c_age" ColumnName="c_age" />
+                <ScalarProperty Name="c_mail" ColumnName="c_mail" />
+                <ScalarProperty Name="c_address" ColumnName="c_address" />
+                <ScalarProperty Name="c_contact" ColumnName="c_contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedback_DB">
+            <EntityTypeMapping TypeName="Database1Model.Feedback_DB">
+              <MappingFragment StoreEntitySet="Feedback_DB">
+                <ScalarProperty Name="f_id" ColumnName="f_id" />
+                <ScalarProperty Name="feedback" ColumnName="feedback" />
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="i_id" ColumnName="i_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Item_DB">
+            <EntityTypeMapping TypeName="Database1Model.Item_DB">
+              <MappingFragment StoreEntitySet="Item_DB">
+                <ScalarProperty Name="I_id" ColumnName="I_id" />
+                <ScalarProperty Name="I_name" ColumnName="I_name" />
+                <ScalarProperty Name="I_description" ColumnName="I_description" />
+                <ScalarProperty Name="cc_id" ColumnName="cc_id" />
+                <ScalarProperty Name="i_cost" ColumnName="i_cost" />
+                <ScalarProperty Name="i_discount" ColumnName="i_discount" />
+                <ScalarProperty Name="i_status" ColumnName="i_status" />
+                <ScalarProperty Name="i_quantity" ColumnName="i_quantity" />
+                <ScalarProperty Name="i_company" ColumnName="i_company" />
+                <ScalarProperty Name="i_imagepath" ColumnName="i_imagepath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="order_details">
+            <EntityTypeMapping TypeName="Database1Model.order_details">
+              <MappingFragment StoreEntitySet="order_details">
+                <ScalarProperty Name="o_id" ColumnName="o_id" />
+                <ScalarProperty Name="i_id" ColumnName="i_id" />
+                <ScalarProperty Name="cc_id" ColumnName="cc_id" />
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="o_status" ColumnName="o_status" />
+                <ScalarProperty Name="o_date" ColumnName="o_date" />
+                <ScalarProperty Name="o_cost" ColumnName="o_cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_DB">
+            <EntityTypeMapping TypeName="Database1Model.User_DB">
+              <MappingFragment StoreEntitySet="User_DB">
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+                <ScalarProperty Name="u_password" ColumnName="u_password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

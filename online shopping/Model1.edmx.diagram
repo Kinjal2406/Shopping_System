@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c216db01767c4a448428942a98fb5616" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Database1Model.Admin" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Category" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Customer" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Feedback_DB" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Item_DB" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.order_details" Width="1.5" PointX="8.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.User_DB" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="Database1Model.FK_Table_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_Item_DB_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_order_details_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_Customer_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_Feedback_DB_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_order_details_ToTable_2" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_Feedback_DB_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="Database1Model.FK_order_details_ToTable" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
